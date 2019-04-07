@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Annonces index{% endblock %}
+
+{% block body %}
+    <h1>Annonces index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>AnnonceId</th>
+                <th>DateJugement</th>
+                <th>Siren</th>
+                <th>Nic</th>
+                <th>Commentaires</th>
+                <th>Dep</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for annonce in annonces %}
+            <tr>
+                <td>{{ annonce.id }}</td>
+                <td>{{ annonce.annonceId }}</td>
+                <td>{{ annonce.dateJugement ? annonce.dateJugement|date('Y-m-d') : '' }}</td>
+                <td>{{ annonce.siren }}</td>
+                <td>{{ annonce.nic }}</td>
+                <td>{{ annonce.commentaires }}</td>
+                <td>{{ annonce.dep }}</td>
+                <td>{{ annonce.createdAt ? annonce.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('annonces_show', {'id': annonce.id}) }}">show</a>
+                    <a href="{{ path('annonces_edit', {'id': annonce.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('annonces_new') }}">Create new</a>
+{% endblock %}

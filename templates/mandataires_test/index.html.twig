@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MandatairesTest index{% endblock %}
+
+{% block body %}
+    <h1>MandatairesTest index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Identity</th>
+                <th>Zipcode</th>
+                <th>Dep</th>
+                <th>Siren</th>
+                <th>Nic</th>
+                <th>Adresse</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for mandataires_test in mandataires_tests %}
+            <tr>
+                <td>{{ mandataires_test.id }}</td>
+                <td>{{ mandataires_test.identity }}</td>
+                <td>{{ mandataires_test.zipcode }}</td>
+                <td>{{ mandataires_test.dep }}</td>
+                <td>{{ mandataires_test.siren }}</td>
+                <td>{{ mandataires_test.nic }}</td>
+                <td>{{ mandataires_test.adresse }}</td>
+                <td>
+                    <a href="{{ path('mandataires_test_show', {'id': mandataires_test.id}) }}">show</a>
+                    <a href="{{ path('mandataires_test_edit', {'id': mandataires_test.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('mandataires_test_new') }}">Create new</a>
+{% endblock %}

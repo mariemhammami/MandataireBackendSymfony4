@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit MandatairesTest{% endblock %}
+
+{% block body %}
+    <h1>Edit MandatairesTest</h1>
+
+    {{ include('mandataires_test/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('mandataires_test_index') }}">back to list</a>
+
+    {{ include('mandataires_test/_delete_form.html.twig') }}
+{% endblock %}
