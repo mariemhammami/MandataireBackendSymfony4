@@ -18,7 +18,7 @@ class MandatairesTestType extends AbstractType
             ->add('siren')
             ->add('nic')
             ->add('adresse')
-            ->add('annonce')
+            ->add('annonces')
         ;
     }
 

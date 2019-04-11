@@ -4,15 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Annonces;
 use App\Form\AnnoncesType;
-use App\Repository\AnnoncesRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\View\View;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-
 /**
  * @Route("/annonces")
  */
@@ -23,25 +19,26 @@ class AnnoncesController extends AbstractController
      */
     public function index()
     {
-        $repository = $this->getDoctrine()->getRepository(Annonces::class);
+        $annonces = $this->getDoctrine()
+            ->getRepository(Annonces::class)
+            ->findAll();
 
-        // query for a single Product by its primary key (usually "id")
-        $annonce = $repository->findall();
-
-        return View::create($annonce, Response::HTTP_OK , []);
+        return View::create($annonces, Response::HTTP_OK , []);
     }
 
     /**
      * @Route("/new", name="annonces_new", methods={"POST"}, defaults={"_format": "json"})
      */
-    public function new(Request $request,ValidatorInterface $validator)
+    public function new(Request $request)
     {
         $annonce = new Annonces();
-        $annonce->setSiren($request->get('Siren'));
-        $annonce->setNic($request->get('Nic'));
-        $annonce->setCommentaires($request->get('Commentaires'));
-        $annonce->setDep($request->get('Dep'));
-        $annonce->setCreatedAt($request->get('CreatedAt'));
+        $annonce->setAnnonceId($request->get('annonce_id'));
+        $annonce->setDateJugement($request->get('date_jugement'));
+        $annonce->setSiren($request->get('siren'));
+        $annonce->setNic($request->get('nic'));
+        $annonce->setCommentaires($request->get('commentaires'));
+        $annonce->setDep($request->get('dep'));
+        $annonce->setCreatedAt($request->get('created_at'));
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($annonce);

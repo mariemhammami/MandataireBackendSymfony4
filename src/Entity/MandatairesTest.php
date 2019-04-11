@@ -5,7 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\MandatairesTestRepository")
+ * MandatairesTest
+ *
+ * @ORM\Table(name="mandataires_test", indexes={@ORM\Index(name="siren", columns={"siren", "nic"}), @ORM\Index(name="custom_matching_2", columns={"adresse"}), @ORM\Index(name="zipcode", columns={"zipcode"})})
+ * @ORM\Entity
  */
 class MandatairesTest
 {
@@ -61,14 +64,21 @@ class MandatairesTest
     private $adresse;
 
     /**
-     * @var \Annonces
-     *
-     * @ORM\ManyToOne(targetEntity="Annonces")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="annonce_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToOne(targetEntity="App\Entity\Annonces", inversedBy="mandatairesTests")
      */
-    private $annonce;
+    private $annonces;
+
+    public function getAnnonces(): ?Annonces
+    {
+        return $this->annonces;
+    }
+
+    public function setAnnonces(?Annonces $annonces): self
+    {
+        $this->annonces = $annonces;
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -143,18 +153,6 @@ class MandatairesTest
     public function setAdresse(string $adresse): self
     {
         $this->adresse = $adresse;
-
-        return $this;
-    }
-
-    public function getAnnonce(): ?Annonces
-    {
-        return $this->annonce;
-    }
-
-    public function setAnnonce(?Annonces $annonce): self
-    {
-        $this->annonce = $annonce;
 
         return $this;
     }

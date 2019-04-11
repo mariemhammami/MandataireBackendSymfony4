@@ -7,7 +7,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\AnnoncesRepository")
+ * Annonces
+ *
+ * @ORM\Table(name="annonces", indexes={@ORM\Index(name="annonce_id", columns={"annonce_id"})})
+ * @ORM\Entity
  */
 class Annonces
 {
@@ -68,14 +71,46 @@ class Annonces
      * @ORM\Column(name="created_at", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
     private $createdAt = 'CURRENT_TIMESTAMP';
+
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\MandatairesTest", mappedBy="annonces")
      */
-    private $MandatairesTest;
+    private $mandatairesTests;
 
     public function __construct()
     {
-        $this->MandatairesTest = new ArrayCollection();
+        $this->mandatairesTests = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection|MandatairesTest[]
+     */
+    public function getMandatairesTests(): Collection
+    {
+        return $this->mandatairesTests;
+    }
+
+    public function addMandatairesTest(MandatairesTest $mandatairesTest): self
+    {
+        if (!$this->mandatairesTests->contains($mandatairesTest)) {
+            $this->mandatairesTests[] = $mandatairesTest;
+            $mandatairesTest->setAnnonces($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMandatairesTest(MandatairesTest $mandatairesTest): self
+    {
+        if ($this->mandatairesTests->contains($mandatairesTest)) {
+            $this->mandatairesTests->removeElement($mandatairesTest);
+            // set the owning side to null (unless already changed)
+            if ($mandatairesTest->getAnnonces() === $this) {
+                $mandatairesTest->setAnnonces(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -167,35 +202,5 @@ class Annonces
         return $this;
     }
 
-    /**
-     * @return Collection|MandatairesTest[]
-     */
-    public function getMandatairesTest(): Collection
-    {
-        return $this->MandatairesTest;
-    }
-
-    public function addMandatairesTest(MandatairesTest $mandatairesTest): self
-    {
-        if (!$this->MandatairesTest->contains($mandatairesTest)) {
-            $this->MandatairesTest[] = $mandatairesTest;
-            $mandatairesTest->setAnnonces($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMandatairesTest(MandatairesTest $mandatairesTest): self
-    {
-        if ($this->MandatairesTest->contains($mandatairesTest)) {
-            $this->MandatairesTest->removeElement($mandatairesTest);
-            // set the owning side to null (unless already changed)
-            if ($mandatairesTest->getAnnonces() === $this) {
-                $mandatairesTest->setAnnonces(null);
-            }
-        }
-
-        return $this;
-    }
 
 }
